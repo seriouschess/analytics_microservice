@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace analytics.Models
@@ -6,9 +7,11 @@ namespace analytics.Models
     public class GenericSession
     {
         [Key]
-        public int session_id{get;set;}
+        public int session_id {get;set;}
         
         //time on homepage
         public int time_on_homepage{get;set;}
+
+        public DateTime created_at {get;set;} = DateTime.Now;
     }
 }

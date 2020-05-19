@@ -24,20 +24,43 @@ namespace analytics.Controllers
             return methods.getTokenMethod();
         }
 
+        [HttpPost]
         [Route("create")]
-        public ActionResult<JsonResponse> GenUserSession(){
+        public ActionResult<GenericSession> GenUserSession([FromBody] GenericSession _NewSession){
             GenericSession NewSession = new GenericSession();
-            NewSession.time_on_homepage = 11;
+            NewSession.time_on_homepage = _NewSession.time_on_homepage;
             dbContext.Add(NewSession);
             // OR dbContext.Users.Add(newUser);
             dbContext.SaveChanges();
-            return new JsonResponse("session uploaded");
+            return NewSession;
+        }
+
+        [HttpPost]
+        [Route("update")]
+        public ActionResult<JsonResponse> UpdateSession([FromBody] GenericSession _CurrentSession){
+            System.Console.WriteLine($"Session ID: {_CurrentSession.session_id}");
+            GenericSession CurrentSession = dbContext.SessionGs.Where( x => x.session_id == _CurrentSession.session_id).FirstOrDefault();
+            CurrentSession.time_on_homepage = _CurrentSession.time_on_homepage;
+            dbContext.SaveChanges();
+            return new JsonResponse("Session Updated");
         }
 
         [Route("read")]
         public ActionResult<List<GenericSession>> ReturnSessions(){
             List<GenericSession> output = dbContext.SessionGs.ToList();
             return output;
+        }
+
+        [HttpDelete]
+        [Route("delete")]
+        public ActionResult<JsonResponse> DeleteAll(){
+            List<GenericSession> output = dbContext.SessionGs.ToList();
+            foreach (GenericSession item in output){
+                dbContext.SessionGs.Remove(item);
+                dbContext.SaveChanges();
+            }
+
+            return new JsonResponse("all deleted");
         }
     }
 }

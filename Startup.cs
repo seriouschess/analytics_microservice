@@ -24,6 +24,16 @@ namespace analytics
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy( //dev only
+                    builder =>
+                    {
+                        builder.WithOrigins("*")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
+            });
             services.AddControllersWithViews();
             string mySqlConnection = Configuration["DBInfo:ConnectionString"];
             System.Console.WriteLine(mySqlConnection);
@@ -39,6 +49,7 @@ namespace analytics
             }
 
             app.UseRouting();
+            app.UseCors(); //dev only
 
              app.UseEndpoints(endpoints =>
             {
