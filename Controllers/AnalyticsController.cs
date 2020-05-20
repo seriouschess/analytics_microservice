@@ -20,12 +20,6 @@ namespace analytics.Controllers
             methods = new AnalyticsControllerMethods(dbQuery);
         }
 
-        [HttpGet]
-        [Route("auth")]
-        public ActionResult<JsonResponse> GenAuth(){
-            return methods.getTokenMethod();
-        }
-
         [HttpPost]
         [Route("create")]
         public ActionResult<GenericSession> GenUserSession([FromBody] GenericSession _NewSession){

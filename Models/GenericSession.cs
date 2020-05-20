@@ -10,6 +10,8 @@ namespace analytics.Models
         public int session_id {get;set;}
 
         public string url {get;set;}
+
+        public string token {get;set;}
         
         //time on homepage
         public int time_on_homepage{get;set;}
