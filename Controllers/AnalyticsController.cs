@@ -4,6 +4,7 @@ using analytics.Models;
 using analytics.Controllers.ControllerMethods;
 using System.Collections.Generic;
 using System.Linq;
+using analytics.Queries;
 
 namespace analytics.Controllers
 {
@@ -12,10 +13,11 @@ namespace analytics.Controllers
     public class AnalyticsController : ControllerBase
     {
         private AnalyticsControllerMethods methods;
-        private AnalyticsContext dbContext;
-        public AnalyticsController(AnalyticsContext _dbContext){
-            dbContext = _dbContext;
-            methods = new AnalyticsControllerMethods();
+        private AnalyticsQueries dbQuery;
+
+        public AnalyticsController( AnalyticsQueries _dbQuery){
+            dbQuery = _dbQuery;
+            methods = new AnalyticsControllerMethods(dbQuery);
         }
 
         [HttpGet]
@@ -27,40 +29,24 @@ namespace analytics.Controllers
         [HttpPost]
         [Route("create")]
         public ActionResult<GenericSession> GenUserSession([FromBody] GenericSession _NewSession){
-            GenericSession NewSession = new GenericSession();
-            NewSession.time_on_homepage = _NewSession.time_on_homepage;
-            dbContext.Add(NewSession);
-            // OR dbContext.Users.Add(newUser);
-            dbContext.SaveChanges();
-            return NewSession;
+            return methods.genUserSessionMethod(_NewSession);
         }
 
         [HttpPost]
         [Route("update")]
         public ActionResult<JsonResponse> UpdateSession([FromBody] GenericSession _CurrentSession){
-            System.Console.WriteLine($"Session ID: {_CurrentSession.session_id}");
-            GenericSession CurrentSession = dbContext.SessionGs.Where( x => x.session_id == _CurrentSession.session_id).FirstOrDefault();
-            CurrentSession.time_on_homepage = _CurrentSession.time_on_homepage;
-            dbContext.SaveChanges();
-            return new JsonResponse("Session Updated");
+            return methods.UpdateSessionMethod(_CurrentSession);
         }
 
         [Route("read")]
         public ActionResult<List<GenericSession>> ReturnSessions(){
-            List<GenericSession> output = dbContext.SessionGs.ToList();
-            return output;
+            return methods.ReturnSessionsMethod();
         }
 
         [HttpDelete]
         [Route("delete")]
         public ActionResult<JsonResponse> DeleteAll(){
-            List<GenericSession> output = dbContext.SessionGs.ToList();
-            foreach (GenericSession item in output){
-                dbContext.SessionGs.Remove(item);
-                dbContext.SaveChanges();
-            }
-
-            return new JsonResponse("all deleted");
+            return methods.DeleteAllMethod();
         }
     }
 }
