@@ -15,7 +15,7 @@ namespace analytics.Controllers
         private AnalyticsControllerMethods methods;
         private AnalyticsQueries dbQuery;
 
-        public AnalyticsController( AnalyticsQueries _dbQuery){
+        public AnalyticsController( AnalyticsQueries _dbQuery ){
             dbQuery = _dbQuery;
             methods = new AnalyticsControllerMethods(dbQuery);
         }
@@ -41,6 +41,12 @@ namespace analytics.Controllers
         [Route("delete")]
         public ActionResult<JsonResponse> DeleteAll(){
             return methods.DeleteAllMethod();
+        }
+
+        [HttpGet]
+        [Route("test")]
+        public List<GenericSession> test(){
+            return methods.TestMethod();
         }
     }
 }
