@@ -5,6 +5,7 @@ using analytics.Controllers.ControllerMethods;
 using System.Collections.Generic;
 using System.Linq;
 using analytics.Queries;
+using analytics.dtos;
 
 namespace analytics.Controllers
 {
@@ -45,7 +46,7 @@ namespace analytics.Controllers
 
         [HttpGet]
         [Route("test")]
-        public List<GenericSession> test(){
+        public ReportDto test(){
             return methods.TestMethod();
         }
     }

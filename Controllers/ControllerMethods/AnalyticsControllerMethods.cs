@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using analytics.Classes;
+using analytics.dtos;
 using analytics.JsonMessage;
 using analytics.Models;
 using analytics.Queries;
@@ -12,10 +13,13 @@ namespace analytics.Controllers.ControllerMethods
         private AnalyticsQueries dbQuery;
         private Authenticator auth;
         private DataFormatter formatter;
+        private Reporter reporter;
+
         public AnalyticsControllerMethods( AnalyticsQueries _dbQuery ){
             dbQuery = _dbQuery;
             auth = new Authenticator(dbQuery);
             formatter = new DataFormatter();
+            reporter = new Reporter();
         }
 
         //read all  -- Make all information public?
@@ -83,12 +87,8 @@ namespace analytics.Controllers.ControllerMethods
         }
 
         //test method -- For Development only
-        public List<GenericSession> TestMethod(){
-            int year = 2020;
-            int month = 05;
-            int day = 20;
-            DateTime minDate = new DateTime(year, month, day);
-            return dbQuery.getSessionsByDate(minDate);
+        public ReportDto TestMethod(){
+            return reporter.genericReport(dbQuery.getAllSessions());
         }
 
     }
