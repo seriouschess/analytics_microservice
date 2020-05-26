@@ -28,7 +28,7 @@ namespace analytics.Classes
             }
         }
 
-        public bool validateToken(int session_id, string token){ //from database
+        public bool validateToken(int session_id, string token){ //used for session updates
             GenericSession FoundSession = dbQuery.getSessionById(session_id);
             if(FoundSession.token == token){
                 return true;

@@ -16,7 +16,7 @@ namespace analytics.Queries
             formatter = new DataFormatter();
         }
 
-        public void addSession(GenericSession NewSession){ //void a good idea?
+        public void addSession(GenericSession NewSession){
             dbContext.Add(NewSession);
             // OR dbContext.Users.Add(newUser);
             dbContext.SaveChanges();

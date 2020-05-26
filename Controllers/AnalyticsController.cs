@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using analytics.Queries;
 using analytics.dtos;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace analytics.Controllers
 {
@@ -23,31 +25,33 @@ namespace analytics.Controllers
 
         [HttpPost]
         [Route("create")]
-        public ActionResult<GenericSession> GenUserSession([FromBody] GenericSession _NewSession){
-            return methods.genUserSessionMethod(_NewSession);
+        public async Task<ActionResult<GenericSession>> GenUserSession([FromBody] GenericSession _NewSession){
+            return await methods.genUserSessionMethod(_NewSession);
         }
 
         [HttpPost]
         [Route("update")]
-        public ActionResult<JsonResponse> UpdateSession([FromBody] GenericSession _CurrentSession){
-            return methods.UpdateSessionMethod(_CurrentSession);
+        public async Task<ActionResult<JsonResponse>> UpdateSession([FromBody] GenericSession _CurrentSession){
+            return await methods.UpdateSessionMethod(_CurrentSession);
         }
 
         [Route("read")]
-        public ActionResult<List<GenericSession>> ReturnSessions(){
-            return methods.ReturnSessionsMethod();
+        public async Task<ActionResult<List<GenericSession>>> ReturnSessions(){
+            return await methods.ReturnSessionsMethod();
         }
 
         [HttpDelete]
         [Route("delete")]
-        public ActionResult<JsonResponse> DeleteAll(){
-            return methods.DeleteAllMethod();
+        public async Task<ActionResult<JsonResponse>> DeleteAll(){
+            return await methods.DeleteAllMethod();
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Route("test")]
-        public ReportDto test(){
-            return methods.TestMethod();
+        public ActionResult<JsonResponse> test(){
+            return new BadRequestResult();//methods.TestMethod();
         }
     }
 }
