@@ -7,7 +7,7 @@ async function read(){
         "mode": "cors"
     }
 
-    let response = await fetch("http://127.0.0.1:5000/analytics/read", options);
+    let response = await fetch("http://127.0.0.1:5000/reports/read", options);
     const json = await response.json();
     for(var x=0; x < json.length; x++){
         document.getElementById("analytics_information").innerHTML += JSON.stringify(json[x], null, 2);
@@ -29,7 +29,7 @@ async function createSession(){
         "body":JSON.stringify(session) //session is a global object
     }
 
-    let response = await fetch("http://127.0.0.1:5000/analytics/create", options);
+    let response = await fetch("http://127.0.0.1:5000/storage/create", options);
     const json = await response.json();
     console.log( json );
     session.session_id = json.session_id;
@@ -51,7 +51,7 @@ async function updateSession(){
         "body":JSON.stringify(session)
     }
 
-    let response = await fetch("http://127.0.0.1:5000/analytics/update", options);
+    let response = await fetch("http://127.0.0.1:5000/storage/update", options);
     const json = await response.json();
     console.log( json );
 }

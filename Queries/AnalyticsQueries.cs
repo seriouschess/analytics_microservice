@@ -58,6 +58,23 @@ namespace analytics.Queries
 
         //datetime queries
 
+        public List<GenericSession> getSessionsForDomainByMonth(string domain, DateTime date){ //can also take a full url
+            domain = formatter.stripDomain(domain);
+            return dbContext.SessionGs.Where( x => x.url.Contains(domain) )
+                                        .Where(x => x.created_at.Year == date.Year )
+                                        .Where(x => x.created_at.Month == date.Month )
+                                        .OrderBy(x => x.created_at).ToList();
+        }
+
+        public List<GenericSession> getSessionsForDomainByDate(string domain, DateTime date){ //can also take a full url
+            domain = formatter.stripDomain(domain);
+            return dbContext.SessionGs.Where( x => x.url.Contains(domain) )
+                                        .Where(x => x.created_at.Year == date.Year )
+                                        .Where(x => x.created_at.Month == date.Month )
+                                        .Where(x => x.created_at.Day == date.Day)
+                                        .OrderBy(x => x.created_at).ToList();
+        }
+
         public List<GenericSession> getSessionsByDate(DateTime date){
             List<GenericSession> FoundSessions =  dbContext.SessionGs.Where(x => x.created_at.Year == date.Year )
                                                                 .Where(x => x.created_at.Month == date.Month )
@@ -78,19 +95,19 @@ namespace analytics.Queries
             return FoundSessions;
         }
 
-        public List<GenericSession> getSessionsBeforeDateTime(DateTime date){
-            List<GenericSession> FoundSessions = dbContext.SessionGs.Where(x => x.created_at < date).OrderBy(x => x.created_at).ToList();
+        public List<GenericSession> getSessionsOnOrBeforeDateTime(DateTime date){
+            List<GenericSession> FoundSessions = dbContext.SessionGs.Where(x => x.created_at <= date).OrderBy(x => x.created_at).ToList();
             return FoundSessions;
         }
 
-        public List<GenericSession> getSessionsAfterDateTime(DateTime date){
-            List<GenericSession> FoundSessions = dbContext.SessionGs.Where(x => x.created_at > date).OrderBy(x => x.created_at).ToList();
+        public List<GenericSession> getSessionsOnOrAfterDateTime(DateTime date){
+            List<GenericSession> FoundSessions = dbContext.SessionGs.Where(x => x.created_at >= date).OrderBy(x => x.created_at).ToList();
             return FoundSessions;
         }
 
         public List<GenericSession> getSessionsInDateTimeRange(DateTime min, DateTime max){
-            List<GenericSession> FoundSessions = dbContext.SessionGs.Where(x => x.created_at > min)
-                                                                    .Where(x => x.created_at < max).OrderBy(x => x.created_at).ToList();
+            List<GenericSession> FoundSessions = dbContext.SessionGs.Where(x => x.created_at >= min)
+                                                                    .Where(x => x.created_at <= max).OrderBy(x => x.created_at).ToList();
             return FoundSessions;
         }
     }

@@ -14,7 +14,7 @@ using analytics.Queries;
 
 namespace analytics.Controllers.ControllerMethods
 {
-    public class AnalyticsControllerMethods
+    public class StorageControllerMethods
     {
         private AnalyticsQueries dbQuery;
         private Authenticator auth;
@@ -23,49 +23,12 @@ namespace analytics.Controllers.ControllerMethods
 
         private Validator validator;
 
-        public AnalyticsControllerMethods( AnalyticsQueries _dbQuery ){
+        public StorageControllerMethods( AnalyticsQueries _dbQuery ){
             dbQuery = _dbQuery;
             auth = new Authenticator(dbQuery);
             formatter = new DataFormatter();
             reporter = new Reporter();
             validator = new Validator();
-        }
-
-        //read all  -- Make all information public?
-        public async Task<List<GenericSession>> ReturnSessionsMethod(){
-            return await Task.Run(() => 
-                dbQuery.getAllSessions()
-            );
-        }
-
-        //Url related Queries
-
-        public async Task<ActionResult<List<GenericSession>>> getAllByDomain(string domain){
-            domain = formatter.stripDomain(domain);
-            return await Task.Run(() => dbQuery.getSessionsByDomain(domain) );
-        }
-
-        public async Task<ActionResult<List<GenericSession>>> getAllByUrl(string url){ //maybe validate url regex to ensure . and / exist?
-            return await Task.Run(() => dbQuery.getSessionsByUrl(url));
-        }
-
-        //DateTime Queries
-
-        public async Task<ActionResult<List<GenericSession>>> getAllBeforeDateTime(DateTime date){
-            return await Task.Run(() => dbQuery.getSessionsOnOrBeforeDateTime(date));
-        }
-
-        public async Task<ActionResult<List<GenericSession>>> getAllAfterDateTime(DateTime date){
-            return await Task.Run(() => dbQuery.getSessionsOnOrAfterDateTime(date));
-        }
-
-        public async Task<ActionResult<List<GenericSession>>> getAllInDateTimeRange(DateTime min_date, DateTime max_date){
-            return await Task.Run(() => dbQuery.getSessionsInDateTimeRange(min_date, max_date));
-        }
-
-        public async Task<ActionResult<List<GenericSession>>> getAllByDate(int year, int month, int day){
-            DateTime minDate = new DateTime(year, month, day);
-            return await Task.Run(() => dbQuery.getSessionsByDate(minDate));
         }
 
         //CRUD actions
@@ -110,6 +73,5 @@ namespace analytics.Controllers.ControllerMethods
             return new BadRequestResult();
             //return reporter.genericReport(dbQuery.getAllSessions());
         }
-
     }
 }
