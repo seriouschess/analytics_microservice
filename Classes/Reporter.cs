@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using analytics.dtos;
+using analytics.dtos.ReportDtos;
 using analytics.Models;
 
 namespace analytics.Classes
@@ -18,7 +19,7 @@ namespace analytics.Classes
             return log_of_day;
         }
 
-        public ReportDto CountByDate( List<GenericSession> data ){
+        public DomainReportSummary CountByDate( List<GenericSession> data ){
                DateTime current_date = data[0].created_at;
                List<LogDate> session_count_by_date = new List<LogDate>();
                double daily_engagement_seconds = data[0].time_on_homepage;
@@ -61,14 +62,14 @@ namespace analytics.Classes
                 }
 
             }
-            ReportDto report = new ReportDto();
+            DomainReportSummary report = new DomainReportSummary();
             report.sessions_by_day =  session_count_by_date;
             report.total_engagement_hours = total_engagement_hours;
             return report;
         }
 
-        public ReportDto genericReport( List<GenericSession> data){
-            ReportDto report = new ReportDto();
+        public DomainReportSummary genericReport( List<GenericSession> data){
+            DomainReportSummary report = new DomainReportSummary();
             report = CountByDate(data);
             return report;
         }
