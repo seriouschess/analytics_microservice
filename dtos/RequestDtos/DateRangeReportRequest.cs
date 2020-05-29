@@ -2,15 +2,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace analytics.dtos.RequestDtos
 {
-    public class ReportRequest
+    public class DateRangeReportRequest
     {
         [Required]
         public string domain{get;set;}
         [Required]
-        public int year{get;set;}
+        public date date_one{get;set;}
         [Required]
-        public int month{get;set;}
-        [Required]
-        public int day{get;set;}
+        public date date_two{get;set;}
+        
     }
 }

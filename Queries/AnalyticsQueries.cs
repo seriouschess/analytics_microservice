@@ -41,6 +41,13 @@ namespace analytics.Queries
             }
         }
 
+        //Summary Queries
+        public int getSessionCountByDomain(string domain){
+            domain = formatter.stripDomain(domain);
+            var count = dbContext.SessionGs.Count(x => x.url.Contains(domain));
+            return count;
+        }
+
         //Session Queries
         public GenericSession getSessionById(int session_id){
             GenericSession FoundSession =  dbContext.SessionGs.Where(x => x.session_id == session_id).FirstOrDefault();
@@ -105,8 +112,9 @@ namespace analytics.Queries
             return FoundSessions;
         }
 
-        public List<GenericSession> getSessionsInDateTimeRange(DateTime min, DateTime max){
-            List<GenericSession> FoundSessions = dbContext.SessionGs.Where(x => x.created_at >= min)
+        public List<GenericSession> getSessionsByDomainInDateTimeRange(string domain, DateTime min, DateTime max){
+            List<GenericSession> FoundSessions = dbContext.SessionGs.Where( x => x.url.Contains(domain) )
+                                                                    .Where(x => x.created_at >= min)
                                                                     .Where(x => x.created_at <= max).OrderBy(x => x.created_at).ToList();
             return FoundSessions;
         }
