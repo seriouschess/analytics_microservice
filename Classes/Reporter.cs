@@ -20,11 +20,19 @@ namespace analytics.Classes
         }
 
         public DomainReportSummary CountByDate( List<GenericSession> data ){
-               DateTime current_date = data[0].created_at;
-               List<LogDate> session_count_by_date = new List<LogDate>();
-               double daily_engagement_seconds = data[0].time_on_homepage;
-               double total_engagement_hours = daily_engagement_seconds/3600;
-               int session_count_for_current_date = 1; //count the first entry
+            if(data.Count == 0){ //no entries found edge case
+                DomainReportSummary empty_report = new DomainReportSummary();
+                empty_report.sessions_by_day = new List<LogDate>();
+                empty_report.total_engagement_hours = 0;
+                return empty_report;
+            }
+
+            DateTime current_date = data[0].created_at;
+            List<LogDate> session_count_by_date = new List<LogDate>();
+            double daily_engagement_seconds = data[0].time_on_homepage;
+            double total_engagement_hours = daily_engagement_seconds/3600;
+            int session_count_for_current_date = 1; //count the first entry
+
 
             if(data.Count == 1){ //edge case of only having a single entry
                 session_count_by_date.Add(logNewDay(
