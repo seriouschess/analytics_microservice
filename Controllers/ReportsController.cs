@@ -13,6 +13,10 @@ using analytics.dtos.RequestDtos;
 using analytics.dtos.ErrorDtos;
 using analytics.dtos.ReportDtos;
 
+//fluentvalidation
+using FluentValidation.Results;
+using analytics.Validators;
+
 namespace analytics.Controllers{
     [ApiController]
     [Route("[controller]")]
@@ -42,54 +46,47 @@ namespace analytics.Controllers{
         [HttpGet]
         [Route("for_domain_on_date/summary")]
         public async Task<ActionResult<DomainReportSummary>> DomainSummaryByDate([FromBody] DateReportRequest request){
-            DateTime date;
-            string domain;
-                try{
-                    domain = request.domain;
-                    date = DateTime.Parse($"{request.year}-{request.month}-{request.day}");
-                }catch{
-                    DateReportRequestError response = new DateReportRequestError();
-                return StatusCode(400, response);
-                }
-
+            DateReportValidator validator = new DateReportValidator();
+            ValidationResult verdict = validator.Validate(request);
+            if(verdict.IsValid){
+                string domain = request.domain;
+                DateTime date = DateTime.Parse($"{request.year}-{request.month}-{request.day}");
                 return await methods.ReportByDateMethod(domain, date);
+            }else{
+                DateReportRequestError response = new DateReportRequestError();
+                return StatusCode(400, response);
+            }
         }
 
         [HttpGet]
         [Route("for_domain_on_month/summary")]
-        public async Task<ActionResult<List<GenericSession>>> DomainReportByMonth([FromBody] MonthReportRequest request){
-            DateTime month;
-            string domain;
-
-            try{
-                domain = request.domain;
-                month = DateTime.Parse($"{request.year}-{request.month}");
-            }catch{
+        public async Task<ActionResult<DomainReportSummary>> DomainReportByMonth([FromBody] MonthReportRequest request){
+            MonthReportValidator validator = new MonthReportValidator();
+            ValidationResult verdict = validator.Validate(request);
+            if(verdict.IsValid){
+                string domain = request.domain;
+                DateTime month = DateTime.Parse($"{request.year}-{request.month}");
+                return await methods.ReportByMonthMethod(domain, month);
+            }else{
                 MonthReportRequestError response = new MonthReportRequestError();
                 return StatusCode(400, response);
             }
-            
-            return await methods.RawByMonthMethod(domain, month);
         }
 
         [HttpGet]
         [Route("for_domain_between_dates/summary")]
         public async Task<ActionResult<DomainReportSummary>> DomainReportBetweenDates([FromBody] DateRangeReportRequest request){
-            DateTime date_one;
-            DateTime date_two;
-            string domain;
-
-            try{
-                domain = request.domain;
-                date_one = DateTime.Parse($"{request.date_one.year}-{request.date_one.month}-{request.date_one.day}");
-                date_two = DateTime.Parse($"{request.date_two.year}-{request.date_two.month}-{request.date_two.day}");
-
-            }catch{
+            DateRangeReportValidator validator = new DateRangeReportValidator();
+            ValidationResult verdict = validator.Validate(request);
+            if(verdict.IsValid){
+                string domain = request.domain;
+                DateTime date_one = DateTime.Parse($"{request.date_one.year}-{request.date_one.month}-{request.date_one.day}");
+                DateTime date_two = DateTime.Parse($"{request.date_two.year}-{request.date_two.month}-{request.date_two.day}");
+                return await methods.ReportBetweenDatesMethod(domain, date_one, date_two);
+            }else{
                 DateRangeReportRequestError response = new DateRangeReportRequestError();
                 return StatusCode(400, response);
             }
-
-            return await methods.ReportBetweenDatesMethod(domain, date_one, date_two);
         }
 
         //raw data requests
@@ -103,57 +100,47 @@ namespace analytics.Controllers{
         [HttpGet]
         [Route("for_domain_on_date/raw")]
         public async Task<ActionResult<List<GenericSession>>> RawDomainReportByDate([FromBody] DateReportRequest request){
-            DateTime date;
-            string domain;
-                try{
-                    domain = request.domain;
-                    date = DateTime.Parse($"{request.year}-{request.month}-{request.day}");
-                }catch{
-                    DateReportRequestError response = new DateReportRequestError();
-                return StatusCode(400, response);
-                }
-
+            DateReportValidator validator = new DateReportValidator();
+            ValidationResult verdict = validator.Validate(request);
+            if(verdict.IsValid){
+                string domain = request.domain;
+                DateTime date = DateTime.Parse($"{request.year}-{request.month}-{request.day}");
                 return await methods.RawByDateMethod(domain, date);
+            }else{
+                DateReportRequestError response = new DateReportRequestError();
+                return StatusCode(400, response);
+            }
         }
 
         [HttpGet]
         [Route("for_domain_on_month/raw")]
         public async Task<ActionResult<List<GenericSession>>> RawDomainReportByMonth([FromBody] MonthReportRequest request){
-            DateTime month;
-            string domain;
-
-            try{
-                domain = request.domain;
-                month = DateTime.Parse($"{request.year}-{request.month}");
-            }catch{
+            MonthReportValidator validator = new MonthReportValidator();
+            ValidationResult verdict = validator.Validate(request);
+            if(verdict.IsValid){
+                string domain = request.domain;
+                DateTime month = DateTime.Parse($"{request.year}-{request.month}");
+                return await methods.RawByMonthMethod(domain, month);
+            }else{
                 MonthReportRequestError response = new MonthReportRequestError();
                 return StatusCode(400, response);
             }
-            
-            return await methods.RawByMonthMethod(domain, month);
         }
 
         [HttpGet]
-        [Route("raw/for_domain_between_dates")]
+        [Route("for_domain_between_dates/raw")]
         public async Task<ActionResult<List<GenericSession>>> RawDomainReportBetweenDates([FromBody] DateRangeReportRequest request){
-            DateTime date_one;
-            DateTime date_two;
-            string domain;
-            System.Console.WriteLine("doe");
-
-            try{
-                System.Console.WriteLine("ray");
-                domain = request.domain;
-                date_one = DateTime.Parse($"{request.date_one.year}-{request.date_one.month}-{request.date_one.day}");
-                date_two = DateTime.Parse($"{request.date_two.year}-{request.date_two.month}-{request.date_two.day}");
-            }catch{
-                System.Console.WriteLine("me");
+            DateRangeReportValidator validator = new DateRangeReportValidator();
+            ValidationResult verdict = validator.Validate(request);
+            if(verdict.IsValid){
+                string domain = request.domain;
+                DateTime date_one = DateTime.Parse($"{request.date_one.year}-{request.date_one.month}-{request.date_one.day}");
+                DateTime date_two = DateTime.Parse($"{request.date_two.year}-{request.date_two.month}-{request.date_two.day}");
+                return await methods.RawBetweenDatesMethod(domain, date_one, date_two);
+            }else{
                 DateRangeReportRequestError response = new DateRangeReportRequestError();
                 return StatusCode(400, response);
             }
-            System.Console.WriteLine("fa");
-
-            return await methods.RawBetweenDatesMethod(domain, date_one, date_two);
         }
 
         [HttpGet]

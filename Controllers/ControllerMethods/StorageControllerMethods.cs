@@ -21,14 +21,11 @@ namespace analytics.Controllers.ControllerMethods
         private DataFormatter formatter;
         private Reporter reporter;
 
-        private Validator validator;
-
         public StorageControllerMethods( AnalyticsQueries _dbQuery ){
             dbQuery = _dbQuery;
             auth = new Authenticator(dbQuery);
             formatter = new DataFormatter();
             reporter = new Reporter();
-            validator = new Validator();
         }
 
         //CRUD actions
