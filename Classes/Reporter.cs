@@ -30,7 +30,7 @@ namespace analytics.Classes
             DateTime current_date = data[0].created_at;
             List<LogDate> session_count_by_date = new List<LogDate>();
             double daily_engagement_seconds = data[0].time_on_homepage;
-            double total_enagagement_seconds = daily_engagement_seconds/3600;
+            double total_engagement_seconds = daily_engagement_seconds;
             int session_count_for_current_date = 1; //count the first entry
 
 
@@ -44,12 +44,17 @@ namespace analytics.Classes
             }else{      //this thread will be used in most cases
 
                 for(var x=1; x < data.Count; x++){ //start from second entry
+                    //System.Console.WriteLine($"Daily Engagement Seconds: {daily_engagement_seconds}");
+                    //System.Console.WriteLine($"Total Engagement Seconds: {total_engagement_seconds}");
+                    total_engagement_seconds += data[x].time_on_homepage;
                     daily_engagement_seconds += data[x].time_on_homepage;
-                    total_enagagement_seconds += data[x].time_on_homepage;
+                    
                     // System.Console.WriteLine($"Iterator Value: {data[x].time_on_homepage}");
-                    //   System.Console.WriteLine($"Daily Engagement Seconds: {daily_engagement_seconds}");
-                    //   System.Console.WriteLine($"Total Engagement Hours: {total_enagagement_seconds}");
-                    if( data[x].created_at.Date == current_date.Date ){ //same day
+                    // System.Console.WriteLine($"Daily Engagement Seconds: {daily_engagement_seconds}");
+                    // System.Console.WriteLine($"Total Engagement Seconds: {total_engagement_seconds}");
+
+                    if( data[ x ].created_at.Date == current_date.Date ){ //same day
+                        
                         session_count_for_current_date += 1;
                         if( x == data.Count-1 ){ //end of list, log remaining results
                             session_count_by_date.Add(logNewDay(
@@ -58,16 +63,19 @@ namespace analytics.Classes
                                 daily_engagement_seconds
                             ));
                         }
+                        
                     }else{ //new day, log previous day and continue
+                    System.Console.WriteLine("---NEW DAY---");
+                    System.Console.WriteLine($"Total Engagement Seconds: {total_engagement_seconds}");
+
                         session_count_by_date.Add(logNewDay(
                                 current_date,
                                 session_count_for_current_date,
-                                daily_engagement_seconds
+                                daily_engagement_seconds - data[x].time_on_homepage //current day not counted... yeah
                             ));
                         current_date = data[x].created_at.Date;
                         session_count_for_current_date = 1; //count the day
-                        //total_enagagement_seconds += daily_engagement_seconds/3600;
-                        //System.Console.WriteLine($"Changed Hours: {total_enagagement_seconds}");
+                        // System.Console.WriteLine($"Changed Hours: {total_engagement_seconds}");
                         daily_engagement_seconds = data[x].time_on_homepage; //reset seconds
                     }
                 }
@@ -75,7 +83,7 @@ namespace analytics.Classes
             }
             DomainReportSummary report = new DomainReportSummary();
             report.sessions_by_day =  session_count_by_date;
-            report.total_engagement_hours = total_enagagement_seconds/3600;
+            report.total_engagement_hours = total_engagement_seconds/3600;
             return report;
         }
 
