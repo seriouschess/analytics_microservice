@@ -9,11 +9,11 @@ namespace analytics.Queries
     public class AnalyticsQueries
     {
         private AnalyticsContext dbContext;
-        private DataFormatter formatter;
+        //private DataFormatter formatter;
 
         public AnalyticsQueries(AnalyticsContext _dbContext){
             dbContext = _dbContext;
-            formatter = new DataFormatter();
+            //formatter = new DataFormatter(); //--strip domain functionality not currently used
         }
 
         public void addSession(GenericSession NewSession){
@@ -43,7 +43,7 @@ namespace analytics.Queries
 
         //Summary Queries
         public int getSessionCountByDomain(string domain){
-            domain = formatter.stripDomain(domain);
+            //domain = formatter.stripDomain(domain);
             var count = dbContext.SessionGs.Count(x => x.url.Contains(domain));
             return count;
         }
@@ -55,7 +55,7 @@ namespace analytics.Queries
         }
 
         public List<GenericSession> getSessionsByDomain(string domain){ //can also take a full url
-            domain = formatter.stripDomain(domain);
+            //domain = formatter.stripDomain(domain);
             return dbContext.SessionGs.Where( x => x.url.Contains(domain) ).ToList();
         }
 
@@ -66,7 +66,7 @@ namespace analytics.Queries
         //datetime queries
 
         public List<GenericSession> getSessionsForDomainByMonth(string domain, DateTime date){ //can also take a full url
-            domain = formatter.stripDomain(domain);
+            //domain = formatter.stripDomain(domain);
             return dbContext.SessionGs.Where( x => x.url.Contains(domain) )
                                         .Where(x => x.created_at.Year == date.Year )
                                         .Where(x => x.created_at.Month == date.Month )
@@ -74,7 +74,7 @@ namespace analytics.Queries
         }
 
         public List<GenericSession> getSessionsForDomainByDate(string domain, DateTime date){ //can also take a full url
-            domain = formatter.stripDomain(domain);
+            //domain = formatter.stripDomain(domain);
             return dbContext.SessionGs.Where( x => x.url.Contains(domain) )
                                         .Where(x => x.created_at.Year == date.Year )
                                         .Where(x => x.created_at.Month == date.Month )
