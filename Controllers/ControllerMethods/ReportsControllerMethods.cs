@@ -39,7 +39,6 @@ namespace analytics.Controllers.ControllerMethods
         //     );
         // }
 
-
         //Summary Report Controller Methods
 
         public async Task<ActionResult<DomainReportSummary>> ReportByMonthMethod(string domain, DateTime month){
@@ -66,8 +65,6 @@ namespace analytics.Controllers.ControllerMethods
 
             TimeSpan full_days_time = new TimeSpan(23,59,59); //add a day to account 
             max += full_days_time;
-
-            System.Console.WriteLine($"Max Time: {max}");
 
             List<GenericSession> reportSessions = await Task.Run(() => dbQuery.getSessionsByDomainInDateTimeRange( domain, min, max));
             return reporter.genericReport(reportSessions);

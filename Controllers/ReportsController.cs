@@ -93,7 +93,6 @@ namespace analytics.Controllers{
         [HttpGet]
         [Route("by_domain/raw/{domain}")]
         public async Task<ActionResult<List<GenericSession>>> RawDomainReport(string domain){
-            System.Console.WriteLine(domain);
             return await methods.getAllByDomain(domain);
         }
 
