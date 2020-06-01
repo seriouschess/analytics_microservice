@@ -68,7 +68,7 @@ namespace analytics.Controllers{
                 DateTime month = DateTime.Parse($"{request.year}-{request.month}");
                 return await methods.ReportByMonthMethod(domain, month);
             }else{
-                MonthReportRequestError response = new MonthReportRequestError();
+                MonthReportRequestError response = new MonthReportRequestError(verdict);
                 return StatusCode(400, response);
             }
         }
@@ -91,7 +91,7 @@ namespace analytics.Controllers{
 
         //raw data requests
         [HttpGet]
-        [Route("raw/by_domain/{domain}")]
+        [Route("by_domain/raw/{domain}")]
         public async Task<ActionResult<List<GenericSession>>> RawDomainReport(string domain){
             System.Console.WriteLine(domain);
             return await methods.getAllByDomain(domain);
@@ -122,7 +122,7 @@ namespace analytics.Controllers{
                 DateTime month = DateTime.Parse($"{request.year}-{request.month}");
                 return await methods.RawByMonthMethod(domain, month);
             }else{
-                MonthReportRequestError response = new MonthReportRequestError();
+                MonthReportRequestError response = new MonthReportRequestError(verdict);
                 return StatusCode(400, response);
             }
         }
