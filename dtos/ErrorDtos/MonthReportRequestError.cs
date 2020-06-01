@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using analytics.dtos.RequestDtos;
+using FluentValidation.Results;
 
 namespace analytics.dtos.ErrorDtos
 {
@@ -6,10 +8,15 @@ namespace analytics.dtos.ErrorDtos
     {
         public class DateReportRequestError
         {
-            public string message {get;set;}
+            public List<string> errors{get;set;}
+            public string general {get;set;}
             public MonthReportRequest SampleObject{get;set;}
-            public DateReportRequestError(){
-                message = "Invalid Response Format. Month Report requests must be made with a body of the form of the sample object.";
+            public DateReportRequestError(ValidationResult verdict){
+                errors = new List<string>();
+                foreach( var error in verdict.Errors){
+                errors.Add( $"Error: {error.ToString()}" );
+                } 
+                general = "Invalid Response Format. Month Report requests must be made with a body of the form of the sample object.";
                 SampleObject = new MonthReportRequest();
                 SampleObject.domain = "www.example.com";
                 SampleObject.month = 00;

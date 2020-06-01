@@ -1,13 +1,21 @@
+using System.Collections.Generic;
 using analytics.dtos.RequestDtos;
+using FluentValidation.Results;
 
 namespace analytics.dtos.ErrorDtos
 {
     public class DateRangeReportRequestError
     {
-        public string message {get;set;}
+        public List<string> errors {get;set;}
+        public string general {get;set;}
         public DateRangeReportRequest SampleObject{get;set;}
-        public DateRangeReportRequestError(){
-            message = "Invalid Response Format. Date range report requests must be made with a body of the form of the sample object.";
+        
+        public DateRangeReportRequestError(ValidationResult verdict){
+            errors = new List<string>();
+            foreach( var error in verdict.Errors){
+               errors.Add( $"Error: {error.ToString()}" );
+            } 
+            general = "Invalid Response Format. Date range report requests must be made with a body of the form of the sample object.";
             SampleObject = new DateRangeReportRequest();
             SampleObject.domain = "www.example.com";
             SampleObject.date_one = new date();
