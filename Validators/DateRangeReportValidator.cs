@@ -43,7 +43,7 @@ namespace analytics.Validators
 
             RuleFor(r => r.date_two.day).Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty().WithMessage("Day not included")
-                .InclusiveBetween(1, 32).WithMessage("Day not between 1 and 32");
+                .InclusiveBetween(1, 31).WithMessage("Day not between 1 and 31");
 
         }
 
