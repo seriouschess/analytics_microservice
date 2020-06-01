@@ -60,15 +60,15 @@ namespace analytics.Controllers.ControllerMethods
 
         }
 
-        public async Task<ActionResult<JsonResponse>> DeleteAllMethod(){
-            await Task.Run( () => dbQuery.methodicalDelete());
-            return new JsonResponse("all deleted");
-        }
+        // public async Task<ActionResult<JsonResponse>> DeleteAllMethod(){
+        //     await Task.Run( () => dbQuery.methodicalDelete());
+        //     return new JsonResponse("all deleted");
+        // }
 
-        //test method -- For Development only
-        public ActionResult<JsonResponse> TestMethod(){
-            return new BadRequestResult();
-            //return reporter.genericReport(dbQuery.getAllSessions());
-        }
+        // //test method -- For Development only
+        // public ActionResult<JsonResponse> TestMethod(){
+        //     return new BadRequestResult();
+        //     //return reporter.genericReport(dbQuery.getAllSessions());
+        // }
     }
 }

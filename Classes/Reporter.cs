@@ -65,8 +65,6 @@ namespace analytics.Classes
                         }
                         
                     }else{ //new day, log previous day and continue
-                    System.Console.WriteLine("---NEW DAY---");
-                    System.Console.WriteLine($"Total Engagement Seconds: {total_engagement_seconds}");
 
                         session_count_by_date.Add(logNewDay(
                                 current_date,

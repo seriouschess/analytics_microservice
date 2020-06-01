@@ -31,10 +31,10 @@ namespace analytics.Controllers{
             methods = new ReportsControllerMethods( dbQuery );
         }
 
-        [Route("read")] //really only for testing - should not be in production
-        public async Task<ActionResult<List<GenericSession>>> ReturnSessions(){
-            return await methods.ReturnSessionsMethod();
-        }
+        // [Route("read")] //really only for testing - should not be in production
+        // public async Task<ActionResult<List<GenericSession>>> ReturnSessions(){
+        //     return await methods.ReturnSessionsMethod();
+        // }
 
         //summary reports 
         [HttpGet]

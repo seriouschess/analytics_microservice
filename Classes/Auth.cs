@@ -13,14 +13,12 @@ namespace analytics.Classes
         }
 
         public bool authenticateGeneralUse( string token_string ){
-            System.Console.WriteLine($"Token String: {token_string}");
             string comparison_string = "";
             if(token_string.Length >= 10 && token_string.Length < 100){
                 for( var x = 0; x < 10; x++ ){
                     comparison_string += token_string[x];
                 }
             }
-            System.Console.WriteLine($"Comparison String: {comparison_string}");
             if(comparison_string == "duaiosfbol"){
                 return true;
             }else{

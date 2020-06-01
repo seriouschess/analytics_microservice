@@ -37,18 +37,18 @@ namespace analytics.Controllers
         }
 
         
-        [HttpDelete]
-        [Route("delete")] //for testing. Should not exist in production.
-        public async Task<ActionResult<JsonResponse>> DeleteAll(){
-            return await methods.DeleteAllMethod();
-        }
+        // [HttpDelete] //NOT FOR PRODUCTION
+        // [Route("delete")] //for testing. Should not exist in production. 
+        // public async Task<ActionResult<JsonResponse>> DeleteAll(){
+        //     return await methods.DeleteAllMethod();
+        // }
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Route("test")]
-        public ActionResult<JsonResponse> test(){
-            return new JsonResponse("hi");
-        }
+        // [HttpGet]
+        // [ProducesResponseType(StatusCodes.Status200OK)]
+        // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        // [Route("test")]
+        // public ActionResult<JsonResponse> test(){
+        //     return new JsonResponse("hi");
+        // }
     }
 }

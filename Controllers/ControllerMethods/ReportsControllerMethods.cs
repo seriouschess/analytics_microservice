@@ -22,22 +22,22 @@ namespace analytics.Controllers.ControllerMethods
     {
         private AnalyticsQueries dbQuery;
         private Authenticator auth;
-        private DataFormatter formatter;
+        //private DataFormatter formatter;
         private Reporter reporter;
 
         public ReportsControllerMethods( AnalyticsQueries _dbQuery ){
             dbQuery = _dbQuery;
             auth = new Authenticator(dbQuery);
-            formatter = new DataFormatter();
+            //formatter = new DataFormatter();
             reporter = new Reporter();
         }
 
         //read all  -- Make all information public?
-        public async Task<List<GenericSession>> ReturnSessionsMethod(){
-            return await Task.Run(() => 
-                dbQuery.getAllSessions()
-            );
-        }
+        // public async Task<List<GenericSession>> ReturnSessionsMethod(){
+        //     return await Task.Run(() => 
+        //         dbQuery.getAllSessions()
+        //     );
+        // }
 
 
         //Summary Report Controller Methods
@@ -110,7 +110,7 @@ namespace analytics.Controllers.ControllerMethods
         //Url related Queries
 
         public async Task<ActionResult<List<GenericSession>>> getAllByDomain(string domain){
-            domain = formatter.stripDomain(domain);
+            //domain = formatter.stripDomain(domain);
             return await Task.Run(() => dbQuery.getSessionsByDomain(domain) );
         }
 
@@ -140,9 +140,9 @@ namespace analytics.Controllers.ControllerMethods
         }
 
         //test method -- For Development only
-        public ActionResult<JsonResponse> TestMethod(){
-            return new BadRequestResult();
-            //return reporter.genericReport(dbQuery.getAllSessions());
-        }
+        // public ActionResult<JsonResponse> TestMethod(){
+        //     return new BadRequestResult();
+        //     //return reporter.genericReport(dbQuery.getAllSessions());
+        // }
     }
 }
