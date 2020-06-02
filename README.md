@@ -6,14 +6,12 @@ A microservice API indended to serve as an analytics module for my personal proj
 
 	--How to post data--
 
-Client script can be found in the ClientScript folder of the main directory.
-Reference client script in any HTML document to have client side code send api session data.
-
-
+Add this line of code to the end of the body of any HTML page you wish to track
+<script content-type="text/javascript" src="http://analytics.siteleaves.com/cdn/test"></script>
 
 	--How to request data --
 
-Most api requests for data are made using http://127.0.0.1:5000/reports/for_domain/...
+Most api requests for data are made using http://analytics.siteleaves.com/reports/for_domain/...
 
 Extensions for ..:
 
@@ -30,7 +28,7 @@ Extensions for ..:
 
 -Example of requesting a report on user activity for the month using postman:
 
-create a get request at the url http://127.0.0.1:5000/reports/for_domain/on_month/raw
+create a get request at the url http://analytics.siteleaves.com/reports/for_domain/on_month/raw
 
 create a raw json body with the following object:
 {
@@ -41,4 +39,4 @@ create a raw json body with the following object:
 
 Click send to see all user sessions for the month in a potentially massive list.
 
-A summary report can also be requested using http://127.0.0.1:5000/reports/for_domain/on_month/summary
+A summary report can also be requested using http://analytics.siteleaves.com/reports/for_domain/on_month/summary

@@ -1,24 +1,4 @@
-async function read(){
-    let options = {
-        "method": "GET",
-        "headers": {
-            'Content-Type': 'application/json'
-        },
-        "mode": "cors"
-    }
-
-    let response = await fetch("http://127.0.0.1:5000/reports/read", options);
-    const json = await response.json();
-    for(var x=0; x < json.length; x++){
-        document.getElementById("analytics_information").innerHTML += JSON.stringify(json[x], null, 2);
-    }
-}
-
 async function createSession(){
-    // let data =  {
-    //     "session_id": 0, //inconsequential
-    //     "time_on_homepage": time
-    // }
 
     let options = {
         "method" : "POST",
@@ -29,7 +9,7 @@ async function createSession(){
         "body":JSON.stringify(session) //session is a global object
     }
 
-    let response = await fetch("http://127.0.0.1:5000/storage/create", options);
+    let response = await fetch("http://analytics.siteleaves.com/storage/create", options);
     const json = await response.json();
     console.log( json );
     session.session_id = json.session_id;
@@ -37,10 +17,6 @@ async function createSession(){
 }
 
 async function updateSession(){
-    // let data =  {
-    //     "session_id": 0, //inconsequential
-    //     "time_on_homepage": time
-    // }
 
     let options = {
         "method" : "POST",
@@ -51,7 +27,7 @@ async function updateSession(){
         "body":JSON.stringify(session)
     }
 
-    let response = await fetch("http://127.0.0.1:5000/storage/update", options);
+    let response = await fetch("http://analytics.siteleaves.com/storage/update", options);
     const json = await response.json();
     console.log( json );
 }
@@ -79,7 +55,6 @@ var session = {
 
 createSession();
 setInterval(() => {update()}, 1000);
-setTimeout(() => {read()}, 7000);
 
 
 
