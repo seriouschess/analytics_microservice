@@ -7,7 +7,7 @@ A microservice API indended to serve as an analytics module for my personal proj
 	--How to post data--
 
 Add this line of code to the end of the body of any HTML page you wish to track
-<script content-type="text/javascript" src="http://analytics.siteleaves.com/cdn/test"></script>
+<script content-type="text/javascript" src="http://analytics.siteleaves.com/cdn/logscript"></script>
 
 	--How to request data --
 
@@ -32,7 +32,7 @@ create a get request at the url http://analytics.siteleaves.com/reports/for_doma
 
 create a raw json body with the following object:
 {
-	"domain":"127.0.0.1:8000",
+	"domain":"www.example.com",
 	"year":2020,
 	"month": 6
 }
