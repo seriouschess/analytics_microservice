@@ -15,6 +15,8 @@ namespace analytics.Controllers.ControllerMethods
          [HttpGet]
          [Route("logscript")]
          public ActionResult hi(){
+
+             // /var/www/analytics_microservice/ClientScript/static/amfe.js
              string path = $"{Environment.CurrentDirectory}/ClientScript/static/amfe.js";
           
             if(System.IO.File.Exists(path))
