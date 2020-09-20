@@ -31,11 +31,13 @@ Extensions for ..:
 create a get request at the url http://analytics.siteleaves.com/reports/for_domain/on_month/raw
 
 create a raw json body with the following object:
+```yaml
 {
 	"domain":"www.example.com",
 	"year":2020,
 	"month": 6
 }
+```
 
 Click send to see all user sessions for the month in a potentially massive list.
 
