@@ -33,9 +33,9 @@ create a get request at the url http://analytics.siteleaves.com/reports/for_doma
 create a raw json body with the following object:
 ```yaml
 {
-	"domain":"www.example.com",
-	"year":2020,
-	"month": 6
+  "domain":"www.example.com",
+  "year":2020,
+  "month": 6
 }
 ```
 
