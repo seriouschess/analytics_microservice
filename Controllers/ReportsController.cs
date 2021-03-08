@@ -14,6 +14,9 @@ using analytics.dtos.ReportDtos;
 //fluentvalidation
 using FluentValidation.Results;
 using analytics.Validators;
+using System.IO;
+using CsvHelper;
+using System.Globalization;
 
 namespace analytics.Controllers{
     [ApiController]
@@ -138,6 +141,22 @@ namespace analytics.Controllers{
                 DateRangeReportRequestError response = new DateRangeReportRequestError(verdict);
                 return StatusCode(400, response);
             }
+        }
+
+        [HttpGet]
+        [Route("csv/export")]
+        public ActionResult ExportCsv(){
+            List<GenericSession> records = dbQuery.getAllSessions();
+
+            var stream = new MemoryStream();
+            using(var writeFile = new StreamWriter(stream, leaveOpen: true)) {
+                using (var csv = new CsvWriter(writeFile, CultureInfo.InvariantCulture, true ))
+                {
+                    csv.WriteRecords(records);
+                }
+            }
+            stream.Position = 0; //reset stream
+            return File(stream, "application/octet-stream", "Reports.csv");
         }
 
         [HttpGet]
