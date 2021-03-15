@@ -14,6 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
+//security
+using Microsoft.AspNetCore.Authentication.JwtBearer; 
+
 //queries
 using analytics.Models;
 using analytics.Queries;
@@ -31,6 +34,12 @@ namespace analytics
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(o => 
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            });
+
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy( //dev only
