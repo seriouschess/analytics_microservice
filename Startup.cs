@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 //queries
 using analytics.Models;
 using analytics.Queries;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace analytics
 {
@@ -34,11 +36,25 @@ namespace analytics
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(o => 
-            {
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(
+                    authenticationScheme: JwtBearerDefaults.AuthenticationScheme,
+                    configureOptions: options => {
+                        options.IncludeErrorDetails = true;
+                        options.TokenValidationParameters =
+                        new TokenValidationParameters(){ 
+                            IssuerSigningKey = new SymmetricSecurityKey(
+                                Encoding.UTF32.GetBytes(Configuration["Jwt:PrivateKey"])
+                            ),
+                            ValidAudience = "identityapp",
+                            ValidIssuer = "identityapp",
+                            RequireExpirationTime = true,
+                            RequireAudience = true,
+                            ValidateIssuer = true,
+                            ValidateAudience = true
+                        };
+                    }
+                );
 
             services.AddCors(options =>
             {
@@ -67,6 +83,7 @@ namespace analytics
 
             app.UseRouting();
             app.UseCors(); //dev only
+            app.UseAuthorization();
 
              app.UseEndpoints(endpoints =>
             {
