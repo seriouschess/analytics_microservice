@@ -17,17 +17,17 @@ namespace analytics.Controllers
         private readonly IConfiguration configuration;
         private readonly JwtGenerator jwtGenerator;
 
-       public AdminController(){}
+       public AdminController(IConfiguration config){
+           jwtGenerator = new JwtGenerator();
+       }
 
        [HttpPost]
-       public IActionResult GetToken( LoginModel loginModel ){
-           //bool validCredentials = userManager.CheckCredentials(loginModel);
-           //if (!validCredentials) return BadRequest();
-           //IAuthorizationService user = userManager.GetUserByEmail(loginModel.Email);
+       [Route("token/get")]
+       public IActionResult GetToken( [FromBody] LoginModel loginModel ){
 
            JwtGenerator token = jwtGenerator
-            .AddClaim(new Claim("Email", loginModel.Email))
-            .AddClaim(new Claim("Password", loginModel.Password));
+            .AddClaim(new Claim("Email", loginModel.email))
+            .AddClaim(new Claim("Password", loginModel.password));
 
             return Ok(new {
                 Token = token.GetToken(),
@@ -50,10 +50,10 @@ namespace analytics.Controllers
         private readonly DateTime jwtDate;
         private readonly int tokenLifetimeInSeconds;
 
-        public JwtGenerator(IConfiguration configuration){
+        public JwtGenerator(){
             var credentials = new SigningCredentials(
                 key: new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(configuration["JwTPrivateKey"])
+                    Encoding.UTF8.GetBytes("1234567890")
                 ),
                 algorithm: SecurityAlgorithms.HmacSha256
             );
@@ -61,7 +61,7 @@ namespace analytics.Controllers
             jwtHeader = new JwtHeader(credentials);
             jwtClaims = new List<Claim>();
             jwtDate = DateTime.UtcNow;
-            tokenLifetimeInSeconds = int.Parse(configuration["Jwt:LitetimeInSeconds"]);
+            tokenLifetimeInSeconds = int.Parse("3600");
         }
 
         public JwtGenerator AddClaim(Claim claim){
@@ -91,7 +91,7 @@ namespace analytics.Controllers
 
     public class LoginModel
     {
-        public string Email {get;set;}
-        public string Password {get;set;}
+        public string email {get;set;}
+        public string password {get;set;}
     }
 }
