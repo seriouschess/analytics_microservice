@@ -15,7 +15,6 @@ namespace analytics.Controllers
     [Route("[controller]")]
     public class AdminController: ControllerBase
     {
-        private readonly IConfiguration configuration;
         private readonly JwtGenerator jwtGenerator;
 
        public AdminController(IConfiguration config){
