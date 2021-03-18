@@ -19,7 +19,7 @@ namespace analytics.Controllers
         private readonly JwtGenerator jwtGenerator;
 
        public AdminController(IConfiguration config){
-           jwtGenerator = new JwtGenerator();
+           jwtGenerator = new JwtGenerator(config["Jwt:PrivateKey"], config["Jwt:LifetimeInSeconds"]);
        }
 
        [HttpPost]
@@ -51,10 +51,10 @@ namespace analytics.Controllers
         private readonly DateTime jwtDate;
         private readonly int tokenLifetimeInSeconds;
 
-        public JwtGenerator(){
+        public JwtGenerator(string secret_key, string expiration_time_string_seconds){
             var credentials = new SigningCredentials(
                 key: new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes("1234567890123456")
+                    Encoding.UTF8.GetBytes(secret_key)
                 ),
                 algorithm: SecurityAlgorithms.HmacSha256
             );
@@ -62,7 +62,7 @@ namespace analytics.Controllers
             jwtHeader = new JwtHeader(credentials);
             jwtClaims = new List<Claim>();
             jwtDate = DateTime.UtcNow;
-            tokenLifetimeInSeconds = int.Parse("3600");
+            tokenLifetimeInSeconds = int.Parse(expiration_time_string_seconds);
         }
 
         public JwtGenerator AddClaim(Claim claim){
