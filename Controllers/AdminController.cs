@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace analytics.Controllers
@@ -53,7 +54,7 @@ namespace analytics.Controllers
         public JwtGenerator(){
             var credentials = new SigningCredentials(
                 key: new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes("1234567890")
+                    Encoding.UTF8.GetBytes("1234567890123456")
                 ),
                 algorithm: SecurityAlgorithms.HmacSha256
             );
@@ -84,6 +85,8 @@ namespace analytics.Controllers
                     claims: jwtClaims
                 )
             );
+
+            IdentityModelEventSource.ShowPII = true;
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
